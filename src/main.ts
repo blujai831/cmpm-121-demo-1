@@ -15,6 +15,7 @@ noticeLabel.style.color = "#ff7f00";
 noticeLabel.style.opacity = '0';
 noticeLabel.innerHTML = "nothin happen yet";
 app.append(noticeLabel);
+const NOTICE_FADEOUT_TIME: number = 5;
 
 const buttons = document.createElement("div");
 buttons.style.textAlign = 'center';
@@ -67,10 +68,15 @@ let gameState: {
     /**
      * Number of beabnsies purchased. Each increases playerSpeed by 1.
      */
-    beabnsies: number
+    beabnsies: number,
+    /**
+     * Current opacity of last notice shown, or 0 if no notice yet shown.
+     */
+    noticeOpacity: number
 } = (function () {
     let playerPlaceCounter: number = 0;
     let beabnsies: number = 0;
+    let noticeOpacity: number = 0;
     return {
         initialized: false,
         get playerPlaceCounter() {return playerPlaceCounter;},
@@ -92,6 +98,13 @@ let gameState: {
             but may be modified as needed
             to support future obtainable items. */
             return beabnsies;
+        },
+        get noticeOpacity() {return noticeOpacity;},
+        set noticeOpacity(value) {
+            noticeOpacity = Math.min(1, Math.max(0, value));
+            if (this.initialized) {
+                updateGameUI();
+            }
         }
     };
 })();
@@ -125,6 +138,15 @@ const resetGame = initializeGame;
  */
 function updateGameUI(): void {
     updatePlaceLabel();
+    noticeLabel.style.opacity = String(gameState.noticeOpacity);
+}
+
+/**
+ * Displays a notice. It will fade out in NOTICE_FADEOUT_TIME seconds.
+ */
+function notice(what: string): void {
+    noticeLabel.innerHTML = what;
+    gameState.noticeOpacity = 1;
 }
 
 /**
@@ -207,8 +229,9 @@ function initializeApp(): void {
     let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
     animateForever(function (ts: DOMHighResTimeStamp): void {
         if (lastFrameTimeStamp !== null) {
-            gameState.playerPlaceCounter +=
-                gameState.playerSpeed*(ts - lastFrameTimeStamp)/1000;
+            let interval: number = (ts - lastFrameTimeStamp)/1000;
+            gameState.playerPlaceCounter += gameState.playerSpeed*interval;
+            gameState.noticeOpacity -= interval/NOTICE_FADEOUT_TIME;
         }
         lastFrameTimeStamp = ts;
         updateGameUI();
