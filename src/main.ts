@@ -21,7 +21,7 @@ app.append(theButton);
  * and the fractional part represents how close the player is
  * to the next location.
  */
-let placeCounter = 0;
+let playerPlaceCounter = 0;
 /**
  * The player advances autonomously by this many locations per second.
  * The player may take certain in-game actions to upgrade this value.
@@ -68,7 +68,7 @@ const places: string[] = [
  * @param i The index of the desired location. Defaults to placeCounter.
  * @returns The name of the desired location.
  */
-function getPlaceName(i: number = placeCounter): string {
+function getPlaceName(i: number = playerPlaceCounter): string {
     if (i < 0 || isNaN(i) || !isFinite(i)) {
         return "Somewhere Strange Because the Game Malfunctioned " +
             "and Ejected You Into the Void";
@@ -131,7 +131,7 @@ function animateForever(what: (ts: DOMHighResTimeStamp) => void): void {
 
 // Advance player to next location when theButton is clicked.
 theButton.onclick = function (): void {
-    placeCounter += 1;
+    playerPlaceCounter += 1;
     updateTheNotice();
 }
 
@@ -141,7 +141,7 @@ at a rate of playerSpeed locations per second. */
 let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
 animateForever(function (ts: DOMHighResTimeStamp): void {
     if (lastFrameTimeStamp !== null) {
-        placeCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
+        playerPlaceCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
     }
     lastFrameTimeStamp = ts;
     updateTheNotice();
