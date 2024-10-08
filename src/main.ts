@@ -9,13 +9,28 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-const walkButton = document.createElement("button");
-walkButton.innerHTML = "&#x1F6B6;";
-walkButton.style.fontSize = '32pt';
-app.append(walkButton);
+const buttons = document.createElement("div");
+buttons.style.textAlign = 'center';
+app.append(buttons);
+
+function makeButton(label: string) {
+    let button = document.createElement("button");
+    button.innerHTML = label;
+    button.style.display = 'inline-block';
+    button.style.fontSize = '32pt';
+    button.style.margin = '0.5em';
+    buttons.append(button);
+    return button;
+}
+
+const walkButton = makeButton("&#x1F6B6;");
+const beabnsiesButton = makeButton("&#x1FAD8;");
 
 const placeLabel = document.createElement("div");
 app.append(placeLabel);
+
+const inventoryLabel = document.createElement("div");
+app.append(inventoryLabel);
 
 /**
  * This object holds the game state. Though this program is simple enough
