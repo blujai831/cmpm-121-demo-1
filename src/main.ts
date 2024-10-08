@@ -70,7 +70,7 @@ const places: string[] = [
 function initializeGame(): void {
     playerPlaceCounter = 0;
     playerSpeed = 0;
-    updateTheNotice();
+    updateGameUI();
 }
 
 /**
@@ -85,6 +85,13 @@ function startGame(): void {
  * Clarity alias for initializeGame.
  */
 const resetGame = initializeGame;
+
+/**
+ * Updates the state of all game UI elements.
+ */
+function updateGameUI(): void {
+    updateTheNotice();
+}
 
 /**
  * Looks up the name of a place by its index.
@@ -158,7 +165,7 @@ function initializeApp(): void {
     // Advance player to next location when theButton is clicked.
     theButton.onclick = function (): void {
         playerPlaceCounter += 1;
-        updateTheNotice();
+        updateGameUI();
     }
     /* Additionally, advance player forward one per frame,
     by such an amount as to ensure they advance to the next location autonomously
@@ -169,7 +176,7 @@ function initializeApp(): void {
             playerPlaceCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
         }
         lastFrameTimeStamp = ts;
-        updateTheNotice();
+        updateGameUI();
     });
 }
 
