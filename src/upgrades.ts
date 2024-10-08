@@ -41,7 +41,8 @@ export const upgrades: {[name: string]: upgrade} = {
         purchasePostcondition: state => state.playerPlaceCounter -= 1000,
         purchaseAckMessage: "pikkocked oup tfarsh for the apst 1000 bloks " +
             "too bfilt an BIGRKT WOA WOA",
-        purchaseNakMessage: "got go frther theres not ef trarash bakc ther yet",
+        purchaseNakMessage: "got go frther " +
+            "theres not ef trarash bakc ther yet",
         tickEffect: null,
         oneTimeEffect: null
     }
