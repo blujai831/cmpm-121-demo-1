@@ -49,3 +49,7 @@ export const upgrades: {[name: string]: Upgrade} = {
         oneTimeEffect: null
     }
 }
+
+export const upgradesByPriority: string[] =
+    Object.keys(upgrades).sort((s, t) =>
+        upgrades[t].effectPriority - upgrades[s].effectPriority);
