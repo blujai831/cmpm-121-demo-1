@@ -14,6 +14,9 @@ theButton.innerHTML = "&#x1F6B6;";
 theButton.style.fontSize = '32pt';
 app.append(theButton);
 
+const theNotice = document.createElement("div");
+app.append(theNotice);
+
 /**
  * This counter keeps track of the 1-based index of the location
  * to which the player has walked. It may be a noninteger,
@@ -130,7 +133,6 @@ function formatOrdinal(n: number): string {
     return result;
 }
 
-const theNotice = document.createElement("div");
 /**
  * Sets theNotice's content to a sentence
  * describing the player's current location.
@@ -138,7 +140,6 @@ const theNotice = document.createElement("div");
 function updateTheNotice(): void {
     theNotice.innerHTML = `You are at ${getPlaceName()}.`;
 }
-app.append(theNotice);
 
 /**
  * Recursively calls requestAnimationFrame on an indefinite basis.
