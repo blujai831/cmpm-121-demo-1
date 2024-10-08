@@ -113,3 +113,11 @@ theButton.onclick = function (): void {
     placeCounter += 1;
     updateTheNotice();
 }
+
+/**
+ * Additionally, advance player to next location once per second.
+ */
+setInterval(function (): void {
+    placeCounter += 1;
+    updateTheNotice();
+}, 1000);
