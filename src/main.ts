@@ -221,7 +221,6 @@ function initializeApp(): void {
     // Advance player to next location when walkButton is clicked.
     walkButton.onclick = function (): void {
         gameState.playerPlaceCounter += 1;
-        updateGameUI();
     }
     /* Additionally, advance player forward one per frame,
     by such an amount as to ensure they advance to the next location
@@ -234,7 +233,6 @@ function initializeApp(): void {
             gameState.noticeOpacity -= interval/NOTICE_FADEOUT_TIME;
         }
         lastFrameTimeStamp = ts;
-        updateGameUI();
     });
 }
 
