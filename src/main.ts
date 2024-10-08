@@ -86,7 +86,7 @@ function getPlaceName(i: number = placeCounter): string {
  */
 function formatOrdinal(n: number): string {
     let result = `${n}`;
-    switch (result[result.length]) {
+    switch (result[result.length - 1]) {
         case '1': result += "st"; break;
         case '2': result += "nd"; break;
         case '3': result += "rd"; break;
