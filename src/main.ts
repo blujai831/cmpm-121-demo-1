@@ -13,6 +13,7 @@ app.append(header);
 const noticeLabel = document.createElement("div");
 noticeLabel.style.color = "#ff7f00";
 noticeLabel.style.opacity = '0';
+noticeLabel.style.fontWeight = 'bold';
 noticeLabel.innerHTML = "nothin happen yet";
 app.append(noticeLabel);
 const NOTICE_FADEOUT_TIME: number = 2;
