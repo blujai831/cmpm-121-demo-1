@@ -12,6 +12,8 @@ app.append(header);
 
 const noticeLabel = document.createElement("div");
 noticeLabel.style.color = "#ff7f00";
+noticeLabel.style.opacity = '0';
+noticeLabel.innerHTML = "nothin happen yet";
 app.append(noticeLabel);
 
 const buttons = document.createElement("div");
