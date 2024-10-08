@@ -21,12 +21,12 @@ app.append(theButton);
  * and the fractional part represents how close the player is
  * to the next location.
  */
-let playerPlaceCounter = 0;
+let playerPlaceCounter: number;
 /**
  * The player advances autonomously by this many locations per second.
  * The player may take certain in-game actions to upgrade this value.
  */
-let playerSpeed = 0;
+let playerSpeed: number;
 /**
  * List of locations to which the player can walk.
  * Any location beyond the last one in this list will be represented
@@ -60,6 +60,27 @@ const places: string[] = [
     "Astral Plane",
     "Mars"
 ];
+
+/**
+ * Sets game variables to initial values.
+ */
+function initializeGame(): void {
+    playerPlaceCounter = 0;
+    playerSpeed = 0;
+}
+
+/**
+ * Does first-time setup and calls initializeGame.
+ */
+function startGame(): void {
+    initializeApp();
+    initializeGame();
+}
+
+/**
+ * Clarity alias for initializeGame.
+ */
+const resetGame = initializeGame;
 
 /**
  * Looks up the name of a place by its index.
@@ -129,20 +150,26 @@ function animateForever(what: (ts: DOMHighResTimeStamp) => void): void {
     });
 }
 
-// Advance player to next location when theButton is clicked.
-theButton.onclick = function (): void {
-    playerPlaceCounter += 1;
-    updateTheNotice();
+/**
+ * Sets up game-related callbacks.
+ */
+function initializeApp(): void {
+    // Advance player to next location when theButton is clicked.
+    theButton.onclick = function (): void {
+        playerPlaceCounter += 1;
+        updateTheNotice();
+    }
+    /* Additionally, advance player forward one per frame,
+    by such an amount as to ensure they advance to the next location autonomously
+    at a rate of playerSpeed locations per second. */
+    let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
+    animateForever(function (ts: DOMHighResTimeStamp): void {
+        if (lastFrameTimeStamp !== null) {
+            playerPlaceCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
+        }
+        lastFrameTimeStamp = ts;
+        updateTheNotice();
+    });
 }
 
-/* Additionally, advance player forward one per frame,
-by such an amount as to ensure they advance to the next location autonomously
-at a rate of playerSpeed locations per second. */
-let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
-animateForever(function (ts: DOMHighResTimeStamp): void {
-    if (lastFrameTimeStamp !== null) {
-        playerPlaceCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
-    }
-    lastFrameTimeStamp = ts;
-    updateTheNotice();
-});
+startGame();
