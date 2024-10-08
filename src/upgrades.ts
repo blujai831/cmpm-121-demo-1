@@ -53,3 +53,12 @@ export const upgrades: {[name: string]: Upgrade} = {
 export const upgradesByPriority: string[] =
     Object.keys(upgrades).sort((s, t) =>
         upgrades[t].effectPriority - upgrades[s].effectPriority);
+
+/**
+ * This type bundles an upgrade object with its name and current quantity.
+ */
+export type UpgradeState = {
+    name: string,
+    quantity: number,
+    object: Upgrade
+};
