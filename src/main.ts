@@ -86,11 +86,19 @@ function getPlaceName(i: number = placeCounter): string {
  */
 function formatOrdinal(n: number): string {
     let result = `${n}`;
-    switch (result[result.length - 1]) {
-        case '1': result += "st"; break;
-        case '2': result += "nd"; break;
-        case '3': result += "rd"; break;
-        default: result += "th"; break;
+    /* Check if number's second-to-last digit is 1.
+    (OK to possibly index out of bounds
+    because undefined will not test equal to '1'.) */
+    switch (result[result.length - 2]) {
+        // A number whose second-to-last digit is 1 will always end in -th.
+        case '1': result += "th"; break;
+        // Other numbers have more varied suffices.
+        default: switch (result[result.length - 1]) {
+            case '1': result += "st"; break;
+            case '2': result += "nd"; break;
+            case '3': result += "rd"; break;
+            default: result += "th"; break;
+        } break;
     }
     return result;
 }
