@@ -2,19 +2,21 @@ import { GameState } from "./GameState.ts";
 
 export type upgrade = {
     effectPriority: number,
-    speedFormulaEffect: ((playerSpeed: number) => number) | null,
+    speedFormulaEffect: ((playerSpeed: number, qty: number) => number) | null,
     purchasePrecondition: ((gameState: GameState) => boolean) | null,
     purchasePostcondition: ((gameState: GameState) => void) | null,
     purchaseAckMessage: string | null,
     purchaseNakMessage: string | null,
-    tickEffect: ((gameState: GameState, interval: number) => void) | null,
-    oneTimeEffect: ((gameState: GameState) => void) | null
+    tickEffect:
+        ((gameState: GameState, interval: number, qty: number) => void) |
+        null,
+    oneTimeEffect: ((gameState: GameState, qty: number) => void) | null
 };
 
 export const upgrades: {[name: string]: upgrade} = {
     "beabnsy": {
         effectPriority: 1,
-        speedFormulaEffect: n => n + 0.1,
+        speedFormulaEffect: (n, q) => n + 0.1*q,
         purchasePrecondition: state => state.playerPlaceCounter >= 10,
         purchasePostcondition: state => state.playerPlaceCounter -= 10,
         purchaseAckMessage: "backtracked 10 blocks to find a beabnsy",
@@ -25,7 +27,7 @@ export const upgrades: {[name: string]: upgrade} = {
     },
     "roket": {
         effectPriority: 1,
-        speedFormulaEffect: n => n + 2,
+        speedFormulaEffect: (n, q) => n + 2*q,
         purchasePrecondition: state => state.playerPlaceCounter >= 100,
         purchasePostcondition: state => state.playerPlaceCounter -= 100,
         purchaseAckMessage: "picked up tarsh for the past 100 blocks " +
@@ -36,7 +38,7 @@ export const upgrades: {[name: string]: upgrade} = {
     },
     "bigrkt": {
         effectPriority: 1,
-        speedFormulaEffect: n => n + 50,
+        speedFormulaEffect: (n, q) => n + 50*q,
         purchasePrecondition: state => state.playerPlaceCounter >= 1000,
         purchasePostcondition: state => state.playerPlaceCounter -= 1000,
         purchaseAckMessage: "pikkocked oup tfarsh for the apst 1000 bloks " +
