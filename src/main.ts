@@ -1,5 +1,6 @@
 import "./style.css";
 import { places } from "./places.ts";
+import { GameState } from "./GameState.ts";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
@@ -46,35 +47,7 @@ app.append(inventoryLabel);
  * that we could be using bare variables, and do for other things,
  * here we are using an object because we need setters.
  */
-let gameState: {
-    /**
-     * If this value is false, extra side effects from setters will not run.
-     */
-    initialized: boolean,
-    /**
-     * This counter keeps track of the 1-based index of the location
-     * to which the player has walked. It may be a noninteger,
-     * in which case the integer coercion is used as the index,
-     * and the fractional part represents how close the player is
-     * to the next location.
-     */
-    playerPlaceCounter: number,
-    /**
-     * The player advances autonomously by this many locations per second.
-     * The player may take certain in-game actions to upgrade this value.
-     * It is a computed property: it is not actually stored,
-     * and cannot be directly set.
-     */
-    playerSpeed: number,
-    /**
-     * Number of beabnsies purchased. Each increases playerSpeed by 1.
-     */
-    beabnsies: number,
-    /**
-     * Current opacity of last notice shown, or 0 if no notice yet shown.
-     */
-    noticeOpacity: number
-} = (function () {
+let gameState: GameState = (function () {
     let playerPlaceCounter: number = 0;
     let beabnsies: number = 0;
     let noticeOpacity: number = 0;
