@@ -1,6 +1,6 @@
 import { GameState } from "./GameState.ts";
 
-export type upgrade = {
+export type Upgrade = {
     effectPriority: number,
     speedFormulaEffect: ((playerSpeed: number, qty: number) => number) | null,
     purchasePrecondition: ((gameState: GameState) => boolean) | null,
@@ -13,7 +13,7 @@ export type upgrade = {
     oneTimeEffect: ((gameState: GameState, qty: number) => void) | null
 };
 
-export const upgrades: {[name: string]: upgrade} = {
+export const upgrades: {[name: string]: Upgrade} = {
     "beabnsy": {
         effectPriority: 1,
         speedFormulaEffect: (n, q) => n + 0.1*q,
