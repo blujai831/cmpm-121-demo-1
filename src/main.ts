@@ -131,11 +131,6 @@ function startGame(): void {
 }
 
 /**
- * Clarity alias for initializeGame.
- */
-const resetGame = initializeGame;
-
-/**
  * Updates the state of all game UI elements.
  */
 function updateGameUI(): void {
