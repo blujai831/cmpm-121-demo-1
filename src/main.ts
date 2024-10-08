@@ -139,7 +139,7 @@ const resetGame = initializeGame;
  * Updates the state of all game UI elements.
  */
 function updateGameUI(): void {
-    updateplaceLabel();
+    updatePlaceLabel();
 }
 
 /**
@@ -193,7 +193,7 @@ function formatOrdinal(n: number): string {
  * Sets placeLabel's content to a sentence
  * describing the player's current location.
  */
-function updateplaceLabel(): void {
+function updatePlaceLabel(): void {
     placeLabel.innerHTML = `the budy at ${getPlaceName()}`;
 }
 
