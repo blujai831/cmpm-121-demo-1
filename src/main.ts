@@ -105,3 +105,8 @@ function updateTheNotice(): void {
 }
 updateTheNotice();
 app.append(theNotice);
+
+theButton.onclick = function (): void {
+    placeCounter += 1;
+    updateTheNotice();
+}
