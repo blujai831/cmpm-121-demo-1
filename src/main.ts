@@ -54,11 +54,17 @@ let gameState: {
     /**
      * The player advances autonomously by this many locations per second.
      * The player may take certain in-game actions to upgrade this value.
+     * It is a computed property: it is not actually stored,
+     * and cannot be directly set.
      */
-    playerSpeed: number
+    playerSpeed: number,
+    /**
+     * Number of beabnsies purchased. Each increases playerSpeed by 1.
+     */
+    beabnsies: number
 } = (function () {
     let playerPlaceCounter: number = 0;
-    let playerSpeed: number = 0;
+    let beabnsies: number = 0;
     return {
         initialized: false,
         get playerPlaceCounter() {return playerPlaceCounter;},
@@ -68,12 +74,18 @@ let gameState: {
                 updateGameUI();
             }
         },
-        get playerSpeed() {return playerSpeed;},
-        set playerSpeed(value) {
-            playerSpeed = value;
+        get beabnsies() {return beabnsies;},
+        set beabnsies(value) {
+            beabnsies = value;
             if (this.initialized) {
                 updateGameUI();
             }
+        },
+        get playerSpeed() {
+            /* Formula is trivially simple for now,
+            but may be modified as needed
+            to support future obtainable items. */
+            return beabnsies;
         }
     };
 })();
@@ -84,7 +96,7 @@ let gameState: {
 function initializeGame(): void {
     gameState.initialized = false;
     gameState.playerPlaceCounter = 0;
-    gameState.playerSpeed = 0;
+    gameState.beabnsies = 0;
     gameState.initialized = true;
     updateGameUI();
 }
