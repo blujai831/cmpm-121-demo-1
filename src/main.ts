@@ -10,9 +10,9 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-const errorLabel = document.createElement("div");
-errorLabel.style.color = "#ff7f00";
-app.append(errorLabel);
+const noticeLabel = document.createElement("div");
+noticeLabel.style.color = "#ff7f00";
+app.append(noticeLabel);
 
 const buttons = document.createElement("div");
 buttons.style.textAlign = 'center';
