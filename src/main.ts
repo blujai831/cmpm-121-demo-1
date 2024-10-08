@@ -67,6 +67,7 @@ const places: string[] = [
 function initializeGame(): void {
     playerPlaceCounter = 0;
     playerSpeed = 0;
+    updateTheNotice();
 }
 
 /**
@@ -137,7 +138,6 @@ const theNotice = document.createElement("div");
 function updateTheNotice(): void {
     theNotice.innerHTML = `You are at ${getPlaceName()}.`;
 }
-updateTheNotice();
 app.append(theNotice);
 
 /**
