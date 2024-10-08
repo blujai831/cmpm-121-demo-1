@@ -23,6 +23,11 @@ app.append(theButton);
  */
 let placeCounter = 0;
 /**
+ * The player advances autonomously by this many locations per second.
+ * The player may take certain in-game actions to upgrade this value.
+ */
+let playerSpeed = 0;
+/**
  * List of locations to which the player can walk.
  * Any location beyond the last one in this list will be represented
  * as "Nth Place Beyond" the last one in the list.
@@ -132,11 +137,11 @@ theButton.onclick = function (): void {
 
 /* Additionally, advance player forward one per frame,
 by such an amount as to ensure they advance to the next location autonomously
-once per second. */
+at a rate of playerSpeed locations per second. */
 let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
 animateForever(function (ts: DOMHighResTimeStamp): void {
     if (lastFrameTimeStamp !== null) {
-        placeCounter += (ts - lastFrameTimeStamp)/1000;
+        placeCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
     }
     lastFrameTimeStamp = ts;
     updateTheNotice();
