@@ -138,7 +138,7 @@ function formatOrdinal(n: number): string {
  * describing the player's current location.
  */
 function updateTheNotice(): void {
-    theNotice.innerHTML = `You are at ${getPlaceName()}.`;
+    theNotice.innerHTML = `the budy at ${getPlaceName()}`;
 }
 
 /**
