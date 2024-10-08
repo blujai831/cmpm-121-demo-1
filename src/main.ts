@@ -18,18 +18,50 @@ const theNotice = document.createElement("div");
 app.append(theNotice);
 
 /**
- * This counter keeps track of the 1-based index of the location
- * to which the player has walked. It may be a noninteger,
- * in which case the integer coercion is used as the index,
- * and the fractional part represents how close the player is
- * to the next location.
+ * This object holds the game state. Though this program is simple enough
+ * that we could be using bare variables, and do for other things,
+ * here we are using an object because we need setters.
  */
-let playerPlaceCounter: number;
-/**
- * The player advances autonomously by this many locations per second.
- * The player may take certain in-game actions to upgrade this value.
- */
-let playerSpeed: number;
+let gameState: {
+    /**
+     * If this value is false, extra side effects from setters will not run.
+     */
+    initialized: boolean,
+    /**
+     * This counter keeps track of the 1-based index of the location
+     * to which the player has walked. It may be a noninteger,
+     * in which case the integer coercion is used as the index,
+     * and the fractional part represents how close the player is
+     * to the next location.
+     */
+    playerPlaceCounter: number,
+    /**
+     * The player advances autonomously by this many locations per second.
+     * The player may take certain in-game actions to upgrade this value.
+     */
+    playerSpeed: number
+} = (function () {
+    let playerPlaceCounter: number = 0;
+    let playerSpeed: number = 0;
+    return {
+        initialized: false,
+        get playerPlaceCounter() {return playerPlaceCounter;},
+        set playerPlaceCounter(value) {
+            playerPlaceCounter = value;
+            if (this.initialized) {
+                updateGameUI();
+            }
+        },
+        get playerSpeed() {return playerSpeed;},
+        set playerSpeed(value) {
+            playerSpeed = value;
+            if (this.initialized) {
+                updateGameUI();
+            }
+        }
+    };
+})();
+
 /**
  * List of locations to which the player can walk.
  * Any location beyond the last one in this list will be represented
@@ -68,8 +100,10 @@ const places: string[] = [
  * Sets game variables to initial values.
  */
 function initializeGame(): void {
-    playerPlaceCounter = 0;
-    playerSpeed = 0;
+    gameState.initialized = false;
+    gameState.playerPlaceCounter = 0;
+    gameState.playerSpeed = 0;
+    gameState.initialized = true;
     updateGameUI();
 }
 
@@ -100,7 +134,7 @@ function updateGameUI(): void {
  * @param i The index of the desired location. Defaults to placeCounter.
  * @returns The name of the desired location.
  */
-function getPlaceName(i: number = playerPlaceCounter): string {
+function getPlaceName(i: number = gameState.playerPlaceCounter): string {
     if (i < 0 || isNaN(i) || !isFinite(i)) {
         return "Somewhere Strange Because the Game Malfunctioned " +
             "and Ejected You Into the Void";
@@ -164,7 +198,7 @@ function animateForever(what: (ts: DOMHighResTimeStamp) => void): void {
 function initializeApp(): void {
     // Advance player to next location when theButton is clicked.
     theButton.onclick = function (): void {
-        playerPlaceCounter += 1;
+        gameState.playerPlaceCounter += 1;
         updateGameUI();
     }
     /* Additionally, advance player forward one per frame,
@@ -173,7 +207,7 @@ function initializeApp(): void {
     let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
     animateForever(function (ts: DOMHighResTimeStamp): void {
         if (lastFrameTimeStamp !== null) {
-            playerPlaceCounter += playerSpeed*(ts - lastFrameTimeStamp)/1000;
+            gameState.playerPlaceCounter += gameState.playerSpeed*(ts - lastFrameTimeStamp)/1000;
         }
         lastFrameTimeStamp = ts;
         updateGameUI();
