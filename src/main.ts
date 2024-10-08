@@ -202,12 +202,13 @@ function initializeApp(): void {
         updateGameUI();
     }
     /* Additionally, advance player forward one per frame,
-    by such an amount as to ensure they advance to the next location autonomously
-    at a rate of playerSpeed locations per second. */
+    by such an amount as to ensure they advance to the next location
+    autonomously at a rate of playerSpeed locations per second. */
     let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
     animateForever(function (ts: DOMHighResTimeStamp): void {
         if (lastFrameTimeStamp !== null) {
-            gameState.playerPlaceCounter += gameState.playerSpeed*(ts - lastFrameTimeStamp)/1000;
+            gameState.playerPlaceCounter +=
+                gameState.playerSpeed*(ts - lastFrameTimeStamp)/1000;
         }
         lastFrameTimeStamp = ts;
         updateGameUI();
