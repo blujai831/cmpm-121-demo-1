@@ -107,17 +107,29 @@ updateTheNotice();
 app.append(theNotice);
 
 /**
- * Advance player to next location when theButton is clicked.
+ * Recursively calls requestAnimationFrame on an indefinite basis.
  */
+function animateForever(what: (ts: DOMHighResTimeStamp) => void): void {
+    requestAnimationFrame(function (ts: DOMHighResTimeStamp): void {
+        what(ts);
+        animateForever(what);
+    });
+}
+
+// Advance player to next location when theButton is clicked.
 theButton.onclick = function (): void {
     placeCounter += 1;
     updateTheNotice();
 }
 
-/**
- * Additionally, advance player to next location once per second.
- */
-setInterval(function (): void {
-    placeCounter += 1;
+/* Additionally, advance player forward one per frame,
+by such an amount as to ensure they advance to the next location autonomously
+once per second. */
+let lastFrameTimeStamp: DOMHighResTimeStamp | null = null;
+animateForever(function (ts: DOMHighResTimeStamp): void {
+    if (lastFrameTimeStamp !== null) {
+        placeCounter += (ts - lastFrameTimeStamp)/1000;
+    }
+    lastFrameTimeStamp = ts;
     updateTheNotice();
-}, 1000);
+});
