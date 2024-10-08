@@ -237,6 +237,18 @@ function initializeApp(): void {
         }
         lastFrameTimeStamp = ts;
     });
+    /* Allow purchasing beabnsies
+    at the cost of backtracking by 10 locations. */
+    beabnsiesButton.onclick = function (): void {
+        if (gameState.playerPlaceCounter >= 10) {
+            gameState.playerPlaceCounter -= 10;
+            gameState.beabnsies += 1;
+            notice("backtracked 10 blocks to find a beabnsy");
+        } else {
+            notice("you aren't far enough to backtrack enough " +
+                "to find a beabnsy");
+        }
+    }
 }
 
 startGame();
