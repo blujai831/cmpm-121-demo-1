@@ -222,6 +222,7 @@ function initializeApp(): void {
     // Advance player to next location when walkButton is clicked.
     walkButton.onclick = function (): void {
         gameState.playerPlaceCounter += 1;
+        notice("oo they walkin");
     }
     /* Additionally, advance player forward one per frame,
     by such an amount as to ensure they advance to the next location
