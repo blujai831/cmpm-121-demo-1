@@ -14,8 +14,8 @@ walkButton.innerHTML = "&#x1F6B6;";
 walkButton.style.fontSize = '32pt';
 app.append(walkButton);
 
-const locationLabel = document.createElement("div");
-app.append(locationLabel);
+const placeLabel = document.createElement("div");
+app.append(placeLabel);
 
 /**
  * This object holds the game state. Though this program is simple enough
@@ -124,7 +124,7 @@ const resetGame = initializeGame;
  * Updates the state of all game UI elements.
  */
 function updateGameUI(): void {
-    updatelocationLabel();
+    updateplaceLabel();
 }
 
 /**
@@ -175,11 +175,11 @@ function formatOrdinal(n: number): string {
 }
 
 /**
- * Sets locationLabel's content to a sentence
+ * Sets placeLabel's content to a sentence
  * describing the player's current location.
  */
-function updatelocationLabel(): void {
-    locationLabel.innerHTML = `the budy at ${getPlaceName()}`;
+function updateplaceLabel(): void {
+    placeLabel.innerHTML = `the budy at ${getPlaceName()}`;
 }
 
 /**
