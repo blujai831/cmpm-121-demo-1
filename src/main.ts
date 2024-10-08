@@ -116,6 +116,7 @@ function initializeGame(): void {
     gameState.initialized = false;
     gameState.playerPlaceCounter = 0;
     gameState.beabnsies = 0;
+    gameState.noticeOpacity = 0;
     gameState.initialized = true;
     updateGameUI();
 }
