@@ -15,7 +15,7 @@ noticeLabel.style.color = "#ff7f00";
 noticeLabel.style.opacity = '0';
 noticeLabel.innerHTML = "nothin happen yet";
 app.append(noticeLabel);
-const NOTICE_FADEOUT_TIME: number = 5;
+const NOTICE_FADEOUT_TIME: number = 2;
 
 const buttons = document.createElement("div");
 buttons.style.textAlign = 'center';
