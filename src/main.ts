@@ -9,13 +9,13 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-const theButton = document.createElement("button");
-theButton.innerHTML = "&#x1F6B6;";
-theButton.style.fontSize = '32pt';
-app.append(theButton);
+const walkButton = document.createElement("button");
+walkButton.innerHTML = "&#x1F6B6;";
+walkButton.style.fontSize = '32pt';
+app.append(walkButton);
 
-const theNotice = document.createElement("div");
-app.append(theNotice);
+const locationLabel = document.createElement("div");
+app.append(locationLabel);
 
 /**
  * This object holds the game state. Though this program is simple enough
@@ -124,7 +124,7 @@ const resetGame = initializeGame;
  * Updates the state of all game UI elements.
  */
 function updateGameUI(): void {
-    updateTheNotice();
+    updatelocationLabel();
 }
 
 /**
@@ -175,11 +175,11 @@ function formatOrdinal(n: number): string {
 }
 
 /**
- * Sets theNotice's content to a sentence
+ * Sets locationLabel's content to a sentence
  * describing the player's current location.
  */
-function updateTheNotice(): void {
-    theNotice.innerHTML = `the budy at ${getPlaceName()}`;
+function updatelocationLabel(): void {
+    locationLabel.innerHTML = `the budy at ${getPlaceName()}`;
 }
 
 /**
@@ -196,8 +196,8 @@ function animateForever(what: (ts: DOMHighResTimeStamp) => void): void {
  * Sets up game-related callbacks.
  */
 function initializeApp(): void {
-    // Advance player to next location when theButton is clicked.
-    theButton.onclick = function (): void {
+    // Advance player to next location when walkButton is clicked.
+    walkButton.onclick = function (): void {
         gameState.playerPlaceCounter += 1;
         updateGameUI();
     }
