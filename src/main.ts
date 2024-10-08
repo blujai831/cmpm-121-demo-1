@@ -106,6 +106,9 @@ function updateTheNotice(): void {
 updateTheNotice();
 app.append(theNotice);
 
+/**
+ * Advance player to next location when theButton is clicked.
+ */
 theButton.onclick = function (): void {
     placeCounter += 1;
     updateTheNotice();
