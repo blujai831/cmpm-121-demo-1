@@ -11,11 +11,14 @@ export class GameUI implements IGameUI {
     private _buttonRow: HTMLDivElement;
     private _walkButton: HTMLButtonElement;
     private _buyBeabnsyButton: HTMLButtonElement;
+    private _buyRoketButton: HTMLButtonElement;
+    private _buyBigrktButton: HTMLButtonElement;
     private _noticeDiv: HTMLDivElement;
     private _noticeOpacity: number;
     private _location: string;
     /**
-     * Valid buttonNames are 'walk' and 'buyBeabnsy'.
+     * Valid buttonNames are 'walk', 'buyBeabnsy', 'buyRoket',
+     * and 'buyBigrkt'.
      */
     public buttonCallbacks: {[buttonName: string]: () => void};
     public tickCallback?: (interval: number) => void;
@@ -48,9 +51,13 @@ export class GameUI implements IGameUI {
             return button;
         };
         this._walkButton =
-            makeButton('walk', "&#x1F6B6;") // walking emoji
+            makeButton('walk', "&#x1F6B6;"); // walking emoji
         this._buyBeabnsyButton =
-            makeButton('buyBeabnsy', "&#x1FAD8;") // beans emoji
+            makeButton('buyBeabnsy', "&#x1FAD8;"); // beans emoji
+        this._buyRoketButton =
+            makeButton('buyRoket', "&#x1F680;"); // rocket emoji
+        this._buyBigrktButton =
+            makeButton('buyBigrkt', "&#x1F6F8;"); // ufo emoji
         this._noticeDiv = document.createElement('div');
         this._noticeDiv.style.color = "#ff7f00";
         this._noticeDiv.style.opacity = '0';
@@ -71,6 +78,8 @@ export class GameUI implements IGameUI {
         app.append(this._buttonRow);
         this._buttonRow.append(this._walkButton);
         this._buttonRow.append(this._buyBeabnsyButton);
+        this._buttonRow.append(this._buyRoketButton);
+        this._buttonRow.append(this._buyBigrktButton);
         app.append(this._locationDiv);
         animateForever((interval: number) => {
             this._noticeOpacity = Math.max(0, Math.min(1,
