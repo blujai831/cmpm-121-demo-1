@@ -1,8 +1,7 @@
 import {getPlaceName} from "./places.ts";
 import {IGameState} from "./IGameState.ts";
 import {IGameUI} from "./IGameUI.ts";
-import {IGameUpgrade} from "./IGameUpgrade.ts";
-import {upgrades} from "./upgrades.ts";
+import {Item, availableItems} from "./Item.ts";
 
 /**
  * See IGameState.
@@ -36,12 +35,11 @@ export class GameState implements IGameState {
     public get playerSpeed(): number {
         if (this._playerSpeedNeedsRecalc) {
             let result: number = 0;
-            for (let upgradeName of Object.keys(upgrades)) {
+            for (let item of availableItems) {
                 let qty: number | undefined =
-                    this._upgradeAmounts[upgradeName];
+                    this._upgradeAmounts[item.name];
                 if (qty !== undefined && qty > 0) {
-                    let upgrade: IGameUpgrade = upgrades[upgradeName];
-                    result = upgrade.calculateModifiedSpeed(result, qty);
+                    result += item.rate*qty;
                 }
             }
             this._playerSpeed = result;
@@ -88,12 +86,11 @@ export class GameState implements IGameState {
         }
     }
     public tryPurchaseUpgrade(what: string): boolean {
-        let upgrade: IGameUpgrade = upgrades[what];
-        if (upgrade.canPurchase(this)) {
-            upgrade.doPostPurchase(this);
-            if (upgrade.purchaseAckMessage !== undefined) {
-                this._notice(upgrade.purchaseAckMessage(this));
-            }
+        let upgrade: Item = availableItems.find(x => x.name == what)!;
+        if (this.playerPlaceCounter >= upgrade.cost) {
+            this.playerPlaceCounter -= upgrade.cost;
+            this._notice(`Bought the thing (${what}). Whoop dee doo. ` +
+                `Who cares.`);
             let qty: number | undefined = this._upgradeAmounts[what];
             if (qty === undefined) {
                 qty = 0;
@@ -104,9 +101,7 @@ export class GameState implements IGameState {
             this._showInventoryList();
             return true;
         } else {
-            if (upgrade.purchaseNakMessage !== undefined) {
-                this._notice(upgrade.purchaseNakMessage(this));
-            }
+            this._notice("no");
             return false;
         }
     }
@@ -120,13 +115,6 @@ export class GameState implements IGameState {
     }
     public doTick(interval: number): void {
         this.playerPlaceCounter += this.playerSpeed*interval/1000;
-        for (let upgradeName of Object.keys(this._upgradeAmounts)) {
-            let qty = this._upgradeAmounts[upgradeName];
-            if (qty > 0) {
-                let upgrade = upgrades[upgradeName];
-                upgrade.doTick(this, interval, qty);
-            }
-        }
     }
     public constructor() {
         this._playerPlaceCounter = 0;
