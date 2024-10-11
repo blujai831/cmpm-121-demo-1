@@ -112,6 +112,13 @@ export class GameState implements IGameState {
     }
     public doTick(interval: number): void {
         this.playerPlaceCounter += this.playerSpeed*interval/1000;
+        for (let upgradeName of Object.keys(this._upgradeAmounts)) {
+            let qty = this._upgradeAmounts[upgradeName];
+            if (qty > 0) {
+                let upgrade = upgrades[upgradeName];
+                upgrade.doTick(this, interval, qty);
+            }
+        }
     }
     public constructor() {
         this._playerPlaceCounter = 0;
