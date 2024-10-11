@@ -17,11 +17,6 @@ export interface IGameState {
      */
     playerPlaceCounter: number;
     /**
-     * Number of beabnsies the player currently possesses.
-     * @deprecated Upgrade system is due for overhaul; see IGameUpgrade.ts.
-     */
-    beabnsies: number;
-    /**
      * Current speed of player's autonomous progress.
      * May or may not be settable [n]or actually stored.
      */

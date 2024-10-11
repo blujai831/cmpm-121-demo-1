@@ -1,6 +1,8 @@
+import {getPlaceName} from "./places.ts";
 import {IGameState} from "./IGameState.ts";
 import {IGameUI} from "./IGameUI.ts";
-import {getPlaceName} from "./places.ts";
+import {IGameUpgrade} from "./IGameUpgrade.ts";
+import {upgrades} from "./upgrades.ts";
 
 /**
  * See IGameState.
@@ -8,6 +10,7 @@ import {getPlaceName} from "./places.ts";
 export class GameState implements IGameState {
     private _connectedUI?: IGameUI
     private _playerPlaceCounter: number;
+    private _upgradeAmounts: {[upgradeName: string]: number};
     public get playerPlaceCounter(): number {return this._playerPlaceCounter;}
     public set playerPlaceCounter(where: number) {
         this._playerPlaceCounter = where;
@@ -15,9 +18,18 @@ export class GameState implements IGameState {
             this._connectedUI.location = getPlaceName(where);
         }
     }
-    public beabnsies: number;
     public get playerSpeed(): number {
-        return this.beabnsies;
+        // TODO: cache this value
+        // so we don't have to recalculate it 60 times per second
+        let result: number = 0;
+        for (let upgradeName of Object.keys(upgrades)) {
+            let qty: number | undefined = this._upgradeAmounts[upgradeName];
+            if (qty !== undefined && qty > 0) {
+                let upgrade: IGameUpgrade = upgrades[upgradeName];
+                result = upgrade.calculateModifiedSpeed(result, qty);
+            }
+        }
+        return result;
     }
     public connectUI(ui: IGameUI): void {
         if (this._connectedUI === ui) {
@@ -55,17 +67,23 @@ export class GameState implements IGameState {
         }
     }
     public tryPurchaseUpgrade(what: string): boolean {
-        if (what !== 'beabnsies') {
-            this._notice("uuuhhh that dont exist yet");
-            return false;
-        } else if (this.playerPlaceCounter >= 10) {
-            this.playerPlaceCounter -= 10;
-            this.beabnsies += 1;
-            this._notice("backtracked 10 blocks to find a beabnsy");
+        let upgrade: IGameUpgrade = upgrades[what];
+        if (upgrade.canPurchase(this)) {
+            let qty: number | undefined = this._upgradeAmounts[what];
+            if (qty === undefined) {
+                qty = 0;
+            }
+            qty += 1;
+            this._upgradeAmounts[what] = qty;
+            upgrade.doPostPurchase(this);
+            if (upgrade.purchaseAckMessage !== undefined) {
+                this._notice(upgrade.purchaseAckMessage);
+            }
             return true;
         } else {
-            this._notice("you aren't far enough to backtrack enough " +
-                "to find a beabnsy");
+            if (upgrade.purchaseNakMessage !== undefined) {
+                this._notice(upgrade.purchaseNakMessage);
+            }
             return false;
         }
     }
@@ -74,6 +92,6 @@ export class GameState implements IGameState {
     }
     public constructor() {
         this._playerPlaceCounter = 0;
-        this.beabnsies = 0;
+        this._upgradeAmounts = {};
     }
 }
