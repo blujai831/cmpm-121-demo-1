@@ -1,6 +1,6 @@
-import {Properties} from "./util.ts";
 import {IGameState} from "./IGameState.ts";
 import {IGameUpgrade} from "./IGameUpgrade.ts";
+import {Properties} from "./util.ts";
 
 /**
  * See IGameUpgrade.

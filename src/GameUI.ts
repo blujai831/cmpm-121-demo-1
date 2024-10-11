@@ -1,5 +1,5 @@
-import {animateForever} from "./util.ts";
 import {IGameUI} from "./IGameUI.ts";
+import {animateForever} from "./util.ts";
 
 /**
  * See IGameUI.
