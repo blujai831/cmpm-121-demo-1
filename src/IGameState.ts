@@ -57,6 +57,11 @@ export interface IGameState {
      */
     tryPurchaseUpgrade(what: string): boolean;
     /**
+     * Gets the quantity of the given upgrade that the player owns.
+     * @returns The quantity.
+     */
+    getUpgradeQuantity(what: string): number;
+    /**
      * Should apply any autonomous game logic,
      * e.g. autonomous upgrade effects.
      * @param interval Time elapsed from previous tick to this one, in ms.

@@ -90,13 +90,13 @@ export class GameState implements IGameState {
     public tryPurchaseUpgrade(what: string): boolean {
         let upgrade: IGameUpgrade = upgrades[what];
         if (upgrade.canPurchase(this)) {
+            upgrade.doPostPurchase(this);
             let qty: number | undefined = this._upgradeAmounts[what];
             if (qty === undefined) {
                 qty = 0;
             }
             qty += 1;
             this._upgradeAmounts[what] = qty;
-            upgrade.doPostPurchase(this);
             if (upgrade.purchaseAckMessage !== undefined) {
                 this._notice(upgrade.purchaseAckMessage);
             }
@@ -108,6 +108,14 @@ export class GameState implements IGameState {
                 this._notice(upgrade.purchaseNakMessage);
             }
             return false;
+        }
+    }
+    public getUpgradeQuantity(upgradeName: string): number {
+        let qty: number | undefined = this._upgradeAmounts[upgradeName];
+        if (qty === undefined) {
+            return 0;
+        } else {
+            return qty;
         }
     }
     public doTick(interval: number): void {
