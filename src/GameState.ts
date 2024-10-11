@@ -11,6 +11,8 @@ export class GameState implements IGameState {
     private _connectedUI?: IGameUI
     private _playerPlaceCounter: number;
     private _upgradeAmounts: {[upgradeName: string]: number};
+    private _playerSpeed: number;
+    private _playerSpeedNeedsRecalc: boolean;
     public get playerPlaceCounter(): number {return this._playerPlaceCounter;}
     public set playerPlaceCounter(where: number) {
         this._playerPlaceCounter = where;
@@ -19,17 +21,20 @@ export class GameState implements IGameState {
         }
     }
     public get playerSpeed(): number {
-        // TODO: cache this value
-        // so we don't have to recalculate it 60 times per second
-        let result: number = 0;
-        for (let upgradeName of Object.keys(upgrades)) {
-            let qty: number | undefined = this._upgradeAmounts[upgradeName];
-            if (qty !== undefined && qty > 0) {
-                let upgrade: IGameUpgrade = upgrades[upgradeName];
-                result = upgrade.calculateModifiedSpeed(result, qty);
+        if (this._playerSpeedNeedsRecalc) {
+            let result: number = 0;
+            for (let upgradeName of Object.keys(upgrades)) {
+                let qty: number | undefined =
+                    this._upgradeAmounts[upgradeName];
+                if (qty !== undefined && qty > 0) {
+                    let upgrade: IGameUpgrade = upgrades[upgradeName];
+                    result = upgrade.calculateModifiedSpeed(result, qty);
+                }
             }
+            this._playerSpeed = result;
+            this._playerSpeedNeedsRecalc = false;
         }
-        return result;
+        return this._playerSpeed;
     }
     public connectUI(ui: IGameUI): void {
         if (this._connectedUI === ui) {
@@ -79,6 +84,7 @@ export class GameState implements IGameState {
             if (upgrade.purchaseAckMessage !== undefined) {
                 this._notice(upgrade.purchaseAckMessage);
             }
+            this._playerSpeedNeedsRecalc = true;
             return true;
         } else {
             if (upgrade.purchaseNakMessage !== undefined) {
@@ -93,5 +99,7 @@ export class GameState implements IGameState {
     public constructor() {
         this._playerPlaceCounter = 0;
         this._upgradeAmounts = {};
+        this._playerSpeed = 0;
+        this._playerSpeedNeedsRecalc = false;
     }
 }
