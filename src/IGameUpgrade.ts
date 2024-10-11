@@ -32,13 +32,13 @@ export interface IGameUpgrade {
      * If this property exists, it should be used as the message for a notice
      * to be displayed when the player successfully purchases this upgrade.
      */
-    purchaseAckMessage?: string;
+    purchaseAckMessage?: (gameState: IGameState) => string;
     /**
      * If this property exists, it should be used as the message for a notice
      * to be displayed when the player tries and fails to purchase
      * this upgrade.
      */
-    purchaseNakMessage?: string;
+    purchaseNakMessage?: (gameState: IGameState) => string;
     /**
      * Does any modifications to the game state consistent with purchasing
      * this upgrade, other than increasing the player's possessed quantity

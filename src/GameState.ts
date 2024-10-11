@@ -91,21 +91,21 @@ export class GameState implements IGameState {
         let upgrade: IGameUpgrade = upgrades[what];
         if (upgrade.canPurchase(this)) {
             upgrade.doPostPurchase(this);
+            if (upgrade.purchaseAckMessage !== undefined) {
+                this._notice(upgrade.purchaseAckMessage(this));
+            }
             let qty: number | undefined = this._upgradeAmounts[what];
             if (qty === undefined) {
                 qty = 0;
             }
             qty += 1;
             this._upgradeAmounts[what] = qty;
-            if (upgrade.purchaseAckMessage !== undefined) {
-                this._notice(upgrade.purchaseAckMessage);
-            }
             this._playerSpeedNeedsRecalc = true;
             this._showInventoryList();
             return true;
         } else {
             if (upgrade.purchaseNakMessage !== undefined) {
-                this._notice(upgrade.purchaseNakMessage);
+                this._notice(upgrade.purchaseNakMessage(this));
             }
             return false;
         }

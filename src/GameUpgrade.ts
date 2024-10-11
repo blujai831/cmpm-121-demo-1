@@ -20,11 +20,11 @@ export class GameUpgrade implements IGameUpgrade {
     /**
      * See IGameUpgrade.purchaseAckMessage.
      */
-    public purchaseAckMessage?: string;
+    public purchaseAckMessage?: (gameState: IGameState) => string;
     /**
      * See IGameUpgrade.purchaseNakMessage.
      */
-    public purchaseNakMessage?: string;
+    public purchaseNakMessage?: (gameState: IGameState) => string;
     /**
      * Callback to be invoked to implement doPostPurchase.
      */

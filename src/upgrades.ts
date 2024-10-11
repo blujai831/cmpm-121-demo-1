@@ -18,8 +18,11 @@ export const upgrades: {[upgradeName: string]: IGameUpgrade} = {
         purchaseCondition: (gameState: IGameState): boolean =>
             gameState.playerPlaceCounter >=
                 getPrice('beabnsies', gameState, 10),
-        purchaseAckMessage: "backtracked 10 blocks to find a beabnsy",
-        purchaseNakMessage:
+        purchaseAckMessage: (gameState: IGameState): string =>
+            "backtracked " +
+            `${getPrice('beabnsies', gameState, 10)} ` +
+            "blocks to find a beabnsy",
+        purchaseNakMessage: (_dontCare: IGameState): string =>
             "you aren't far enough to backtrack enough " +
             "to find a beabnsy",
         postPurchaseEffect: (gameState: IGameState): void => {
@@ -33,10 +36,12 @@ export const upgrades: {[upgradeName: string]: IGameUpgrade} = {
         purchaseCondition: (gameState: IGameState): boolean =>
             gameState.playerPlaceCounter >=
                 getPrice('roket', gameState, 100),
-        purchaseAckMessage:
-            "picked up tarsh for the past 100 blocks " +
-            "to build a roket",
-        purchaseNakMessage: "ther not enough trarsh to built an raocket",
+        purchaseAckMessage: (gameState: IGameState): string =>
+            "picked up tarsh for the past " +
+            `${getPrice('roket', gameState, 100)} ` +
+            "bloks to build a roket",
+        purchaseNakMessage: (_dontCare: IGameState): string =>
+            "ther not enough trarsh to built an raocket",
         postPurchaseEffect: (gameState: IGameState): void => {
             gameState.playerPlaceCounter -=
                 getPrice('roket', gameState, 100);
@@ -48,10 +53,11 @@ export const upgrades: {[upgradeName: string]: IGameUpgrade} = {
         purchaseCondition: (gameState: IGameState): boolean =>
             gameState.playerPlaceCounter >=
                 getPrice('bigrkt', gameState, 1000),
-        purchaseAckMessage:
-            "pikkocked oup tfarsh for the apst 1000 bloks " +
-            "too bfilt an BIGRKT WOA WOA",
-        purchaseNakMessage:
+        purchaseAckMessage: (gameState: IGameState): string =>
+            "pikkocked oup tfarsh for the apst " +
+            `${getPrice('bigrkt', gameState, 1000)} ` +
+            "blks too bfilt an BIGRKT WOA WOA",
+        purchaseNakMessage: (_dontCare: IGameState): string =>
             "got go frther " +
             "theres not ef trarash bakc ther yet",
         postPurchaseEffect: (gameState: IGameState): void => {
