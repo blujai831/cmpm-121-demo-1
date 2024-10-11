@@ -61,6 +61,7 @@ export class GameState implements IGameState {
             ui.location = getPlaceName(this.playerPlaceCounter);
             ui.buttonCallbacks['walk'] = (): void => {
                 this.playerPlaceCounter += 1;
+                this._notice("oo they walkin");
             };
             ui.buttonCallbacks['buyBeabnsy'] = (): void => {
                 this.tryPurchaseUpgrade('beabnsies');
