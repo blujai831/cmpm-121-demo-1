@@ -37,7 +37,8 @@ export const upgrades: {[upgradeName: string]: IGameUpgrade} = {
         purchaseAckMessage:
             "pikkocked oup tfarsh for the apst 1000 bloks " +
             "too bfilt an BIGRKT WOA WOA",
-        purchaseNakMessage: "got go frther " +
+        purchaseNakMessage:
+            "got go frther " +
             "theres not ef trarash bakc ther yet",
         postPurchaseEffect: (gameState: IGameState): void => {
             gameState.playerPlaceCounter -= 1000;
