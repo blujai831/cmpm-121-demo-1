@@ -1,6 +1,5 @@
 import {IGameState} from "./IGameState.ts";
 import {IGameUpgrade} from "./IGameUpgrade.ts";
-import {Properties} from "./util.ts";
 
 /**
  * See IGameUpgrade.
@@ -93,7 +92,15 @@ export class GameUpgrade implements IGameUpgrade {
      * the instance's properties, mimicking C/++'s designated initializers.
      * @param properties Keyword arguments / property donor object.
      */
-    public constructor(properties: Properties<GameUpgrade>) {
+    public constructor(properties: Pick<GameUpgrade,
+        'effectOrder' |
+        'speedFormulaEffect' |
+        'purchaseCondition' |
+        'purchaseAckMessage' |
+        'purchaseNakMessage' |
+        'postPurchaseEffect' |
+        'tickEffect'
+    >) {
         Object.assign(this, properties);
     }
 }

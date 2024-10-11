@@ -1,10 +1,4 @@
 /**
- * Gets the type of a plain object that has the same properties
- * as an instance of the given class.
- */
-export type Properties<Klass> = Pick<Klass, keyof Klass>;
-
-/**
  * Applies an appropriate ordinal suffix to the given number
  * (i.e. "-st", "-nd", "-rd", or "-th").
  * @param n The number to format.
