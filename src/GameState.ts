@@ -51,9 +51,15 @@ export class GameState implements IGameState {
             ui.buttonCallbacks['buyBeabnsy'] = (): void => {
                 this.tryPurchaseUpgrade('beabnsies');
             };
+            ui.buttonCallbacks['buyRoket'] = (): void => {
+                this.tryPurchaseUpgrade('roket');
+            };
+            ui.buttonCallbacks['buyBigrkt'] = (): void => {
+                this.tryPurchaseUpgrade('bigrkt');
+            };
             ui.tickCallback = (interval: number): void => {
                 this.doTick(interval);
-            }
+            };
         }
     }
     public disconnectUI(ui?: IGameUI): void {
