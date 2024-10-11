@@ -13,6 +13,19 @@ export class GameState implements IGameState {
     private _upgradeAmounts: {[upgradeName: string]: number};
     private _playerSpeed: number;
     private _playerSpeedNeedsRecalc: boolean;
+    private _notice(what: string): void {
+        if (this._connectedUI !== undefined) {
+            this._connectedUI.notice(what);
+        }
+    }
+    private _showInventoryList(): void {
+        if (this._connectedUI !== undefined) {
+            this._connectedUI.showInventoryList(
+                this._playerSpeed,
+                this._upgradeAmounts
+            );
+        }
+    }
     public get playerPlaceCounter(): number {return this._playerPlaceCounter;}
     public set playerPlaceCounter(where: number) {
         this._playerPlaceCounter = where;
@@ -33,6 +46,7 @@ export class GameState implements IGameState {
             }
             this._playerSpeed = result;
             this._playerSpeedNeedsRecalc = false;
+            this._showInventoryList();
         }
         return this._playerSpeed;
     }
@@ -72,11 +86,6 @@ export class GameState implements IGameState {
             ui.tickCallback = undefined;
         }
     }
-    private _notice(what: string): void {
-        if (this._connectedUI !== undefined) {
-            this._connectedUI.notice(what);
-        }
-    }
     public tryPurchaseUpgrade(what: string): boolean {
         let upgrade: IGameUpgrade = upgrades[what];
         if (upgrade.canPurchase(this)) {
@@ -91,6 +100,7 @@ export class GameState implements IGameState {
                 this._notice(upgrade.purchaseAckMessage);
             }
             this._playerSpeedNeedsRecalc = true;
+            this._showInventoryList();
             return true;
         } else {
             if (upgrade.purchaseNakMessage !== undefined) {

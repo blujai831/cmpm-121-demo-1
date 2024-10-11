@@ -29,6 +29,15 @@ export interface IGameUI {
      */
     notice(what: string): void;
     /**
+     * Should update the inventory list part of the UI.
+     * @param playerSpeed Player current autonomous progress speed.
+     * @param inventory Table mapping item names to possessed quantities.
+     */
+    showInventoryList(
+        playerSpeed: number,
+        inventory: {[upgradeName: string]: number}
+    ): void;
+    /**
      * Should show the UI to the user.
      */
     present(): void;

@@ -8,6 +8,7 @@ export class GameUI implements IGameUI {
     static readonly GAME_NAME: string = "oo they walkin";
     static readonly NOTICE_FADEOUT_TIME: number = 2;
     private _locationDiv: HTMLDivElement;
+    private _location: string;
     private _buttonRow: HTMLDivElement;
     private _walkButton: HTMLButtonElement;
     private _buyBeabnsyButton: HTMLButtonElement;
@@ -15,7 +16,7 @@ export class GameUI implements IGameUI {
     private _buyBigrktButton: HTMLButtonElement;
     private _noticeDiv: HTMLDivElement;
     private _noticeOpacity: number;
-    private _location: string;
+    private _inventoryListDiv: HTMLDivElement;
     /**
      * Valid buttonNames are 'walk', 'buyBeabnsy', 'buyRoket',
      * and 'buyBigrkt'.
@@ -64,6 +65,9 @@ export class GameUI implements IGameUI {
         this._noticeDiv.style.fontWeight = 'bold';
         this._noticeDiv.innerHTML = "nothin happen yet";
         this._noticeOpacity = 0;
+        this._inventoryListDiv = document.createElement('div');
+        this._inventoryListDiv.innerHTML =
+            "<p>only goin 0x fasteds... ywan</p>";
         this._location = "&nbsp;"; // To be filled in by connected GameState
         this.buttonCallbacks = {}; // ^
         this.tickCallback = undefined; // ^
@@ -81,6 +85,7 @@ export class GameUI implements IGameUI {
         this._buttonRow.append(this._buyRoketButton);
         this._buttonRow.append(this._buyBigrktButton);
         app.append(this._locationDiv);
+        app.append(this._inventoryListDiv);
         animateForever((interval: number) => {
             this._noticeOpacity = Math.max(0, Math.min(1,
                 this._noticeOpacity -
@@ -91,5 +96,18 @@ export class GameUI implements IGameUI {
                 this.tickCallback(interval);
             }
         });
+    }
+    showInventoryList(
+        playerSpeed: number,
+        inventory: {[upgradeName: string]: number}
+    ): void {
+        let html = `<p>U goin ${playerSpeed}x fast!!!!1!</p>`;
+        html += "<p>You be havin:</p><ul>";
+        for (let upgradeName of Object.keys(inventory)) {
+            let qty = inventory[upgradeName];
+            html += `<li>${qty}x ${upgradeName}</li>`;
+        }
+        html += "</ul>";
+        this._inventoryListDiv.innerHTML = html;
     }
 }
