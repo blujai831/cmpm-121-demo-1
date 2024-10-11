@@ -70,6 +70,16 @@ export class GameState implements IGameState {
             ui.buttonCallbacks['buyBigrkt'] = (): void => {
                 this.tryPurchaseUpgrade('bigrkt');
             };
+            ui.buttonCallbacks['buyI1'] = (): void => {
+                this.tryPurchaseUpgrade(
+                    'impossible and utterly useless propulsion mechanism 1'
+                );
+            };
+            ui.buttonCallbacks['buyI2'] = (): void => {
+                this.tryPurchaseUpgrade(
+                    'impossible and utterly useless propulsion mechanism 2'
+                );
+            };
             ui.tickCallback = (interval: number): void => {
                 this.doTick(interval);
             };
@@ -89,8 +99,7 @@ export class GameState implements IGameState {
         let upgrade: Item = availableItems.find(x => x.name == what)!;
         if (this.playerPlaceCounter >= upgrade.cost) {
             this.playerPlaceCounter -= upgrade.cost;
-            this._notice(`Bought the thing (${what}). Whoop dee doo. ` +
-                `Who cares.`);
+            this._notice(upgrade.description);
             let qty: number | undefined = this._upgradeAmounts[what];
             if (qty === undefined) {
                 qty = 0;
@@ -101,7 +110,7 @@ export class GameState implements IGameState {
             this._showInventoryList();
             return true;
         } else {
-            this._notice("no");
+            this._notice("(Failed to buy) " + upgrade.description);
             return false;
         }
     }

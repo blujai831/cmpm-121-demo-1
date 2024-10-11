@@ -14,19 +14,21 @@ export class GameUI implements IGameUI {
     private _buyBeabnsyButton: HTMLButtonElement;
     private _buyRoketButton: HTMLButtonElement;
     private _buyBigrktButton: HTMLButtonElement;
+    private _buyI1Button: HTMLButtonElement;
+    private _buyI2Button: HTMLButtonElement;
     private _noticeDiv: HTMLDivElement;
     private _noticeOpacity: number;
     private _inventoryListDiv: HTMLDivElement;
     /**
-     * Valid buttonNames are 'walk', 'buyBeabnsy', 'buyRoket',
-     * and 'buyBigrkt'.
+     * Valid buttonNames are 'walk', 'buyBeabnsy', 'buyRoket', 'buyBigrkt',
+     * 'buyI1', and 'buyI2'.
      */
     public buttonCallbacks: {[buttonName: string]: () => void};
     public tickCallback?: (interval: number) => void;
     public get location(): string {return this._location;}
     public set location(where: string) {
         this._location = where;
-        this._locationDiv.innerHTML = `the budy at ${where}`;
+        this._locationDiv.innerHTML = where;
     }
     public notice(what: string): void {
         this._noticeDiv.innerHTML = what;
@@ -59,6 +61,10 @@ export class GameUI implements IGameUI {
             makeButton('buyRoket', "&#x1F680;"); // rocket emoji
         this._buyBigrktButton =
             makeButton('buyBigrkt', "&#x1F6F8;"); // ufo emoji
+        this._buyI1Button =
+            makeButton('buyI1', "bad vehicle");
+        this._buyI2Button =
+            makeButton('buyI2', "worse vehicle");
         this._noticeDiv = document.createElement('div');
         this._noticeDiv.style.color = "#ff7f00";
         this._noticeDiv.style.opacity = '0';
@@ -84,6 +90,8 @@ export class GameUI implements IGameUI {
         this._buttonRow.append(this._buyBeabnsyButton);
         this._buttonRow.append(this._buyRoketButton);
         this._buttonRow.append(this._buyBigrktButton);
+        this._buttonRow.append(this._buyI1Button);
+        this._buttonRow.append(this._buyI2Button);
         app.append(this._locationDiv);
         app.append(this._inventoryListDiv);
         animateForever((interval: number) => {

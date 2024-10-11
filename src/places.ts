@@ -6,28 +6,7 @@ import {formatOrdinal} from "./util.ts";
  * as "Nth Place Beyond" the last one in the list.
  */
 export const places: string[] = [
-    "Corn",
-    "More Corn",
-    "Additional Corn",
-    "Further Corn",
-    "Probably Not Corn",
-    "Pretty Far from Corn",
-    "Land West of Corn",
-    "Land West of Corn and Around the Corn-er",
-    "Land of Scorn",
-    "Scorn II: the Scornening",
-    "Galapagos",
-    "Kentucky",
-    "Kentucky and a Half",
-    "Three Kentuckies",
-    "An Eggcelent Place to Sell Some Lizard Eggs if You Have Any Lizard Eggs",
-    "Place You Go if You Didn't Have Any Lizard Eggs",
-    "Lizard City AKA Lity",
-    "Littier than Lity",
-    "Littiest",
-    "Giant Shoe",
-    "Astral Plane",
-    "Mars"
+    "A Boring Place"
 ];
 
 /**
