@@ -15,5 +15,32 @@ export const upgrades: {[upgradeName: string]: IGameUpgrade} = {
         postPurchaseEffect: (gameState: IGameState): void => {
             gameState.playerPlaceCounter -= 10;
         }
+    }),
+    'roket': new GameUpgrade({
+        effectOrder: 1,
+        speedFormulaEffect: (n: number, q: number): number => n + 2*q,
+        purchaseCondition: (gameState: IGameState): boolean =>
+            gameState.playerPlaceCounter >= 100,
+        purchaseAckMessage:
+            "picked up tarsh for the past 100 blocks " +
+            "to build a roket",
+        purchaseNakMessage: "ther not enough trarsh to built an raocket",
+        postPurchaseEffect: (gameState: IGameState): void => {
+            gameState.playerPlaceCounter -= 100;
+        }
+    }),
+    'bigrkt': new GameUpgrade({
+        effectOrder: 1,
+        speedFormulaEffect: (n: number, q: number): number => n + 50*q,
+        purchaseCondition: (gameState: IGameState): boolean =>
+            gameState.playerPlaceCounter >= 1000,
+        purchaseAckMessage:
+            "pikkocked oup tfarsh for the apst 1000 bloks " +
+            "too bfilt an BIGRKT WOA WOA",
+        purchaseNakMessage: "got go frther " +
+            "theres not ef trarash bakc ther yet",
+        postPurchaseEffect: (gameState: IGameState): void => {
+            gameState.playerPlaceCounter -= 1000;
+        }
     })
 };
