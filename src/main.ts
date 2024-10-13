@@ -82,7 +82,9 @@ function tickGameState(state: typeof gameState, interval: number) {
 document.title = GAME_TITLE;
 const app: HTMLDivElement = document.querySelector('#app')!;
 
-function makeElement(what: string, how?: (elem: HTMLElement) => void) {
+function makeElement<Tag extends keyof HTMLElementTagNameMap>(
+    what: Tag, how?: (elem: HTMLElementTagNameMap[Tag]) => void
+): HTMLElementTagNameMap[Tag] {
     const elem = document.createElement(what);
     how?.call(elem, elem);
     app.appendChild(elem);
@@ -100,10 +102,10 @@ makeElement('button', elem => {
 });
 const itemButtons = arrayToRecord(availableItems, item => item.name, item =>
     makeElement('button', elem => {
-        (elem as HTMLButtonElement).disabled = true;
+        elem.disabled = true;
         elem.className = 'item-button not-unlocked';
         elem.onclick = _ => tryPurchaseItem(gameState, item);
-    }) as HTMLButtonElement
+    })
 );
 const statusDisplay = makeElement('div');
 
