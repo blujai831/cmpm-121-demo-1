@@ -97,7 +97,8 @@ const globalWarmingIndexDisplay =
 makeElement('button', elem => {
     elem.className = 'item-button';
     elem.innerHTML =
-        `<strong>${BASIC_ACTION_NAME}</strong><br />${BASIC_ACTION_DESCRIPTION}`;
+        `<strong>${BASIC_ACTION_NAME}</strong><br />` +
+        BASIC_ACTION_DESCRIPTION;
     elem.onclick = _ => doBasicAction(gameState);
 });
 const itemButtons = arrayToRecord(availableItems, item => item.name, item =>
