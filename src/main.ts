@@ -118,7 +118,7 @@ const itemButtons = arrayToRecord(availableItems, item => item.name, item =>
 );
 const statusDisplay = makeElement('div');
 
-function updateUI(state: typeof gameState) {
+function updateGlobalWarmingIndexDisplay(state: typeof gameState) {
     if (state.globalWarmingIndex > 0) {
         globalWarmingIndexDisplay.innerHTML =
             `<p>${state.globalWarmingIndex.toFixed(DECIMAL_PRECISION)}
@@ -126,6 +126,24 @@ function updateUI(state: typeof gameState) {
     } else {
         globalWarmingIndexDisplay.innerHTML = `<p>${GAME_PREMISE}</p>`;
     }
+}
+
+function updateItemButton(state: typeof gameState, item: Item) {
+    let qty = state.itemQuantities[item.name];
+    let button = itemButtons[item.name];
+    button.disabled = !canAffordItem(state, item);
+    if (!button.disabled) {
+        button.className = 'item-button unlocked';
+    }
+    button.innerHTML = `
+        <strong>${item.name}</strong><br />
+        Cost: ${getItemRealCost(item, qty).toFixed(DECIMAL_PRECISION)}
+            EcD units<br />
+        ${item.description}
+    `;
+}
+
+function updateStatusDisplay(state: typeof gameState) {
     statusDisplay.innerHTML = "";
     if (state.globalWarmingRate > 0) {
         statusDisplay.innerHTML += `
@@ -134,20 +152,12 @@ function updateUI(state: typeof gameState) {
             units of ecological damage per second.</p>
         `;
     }
+}
+
+function appendInventoryListToStatusDisplay(state: typeof gameState) {
     let listInnerHTML = "";
     for (let item of availableItems) {
         let qty = state.itemQuantities[item.name];
-        let button = itemButtons[item.name];
-        button.disabled = !canAffordItem(state, item);
-        if (!button.disabled) {
-            button.className = 'item-button unlocked';
-        }
-        button.innerHTML = `
-            <strong>${item.name}</strong><br />
-            Cost: ${getItemRealCost(item, qty).toFixed(DECIMAL_PRECISION)}
-                EcD units<br />
-            ${item.description}
-        `;
         if (qty > 0) {
             listInnerHTML +=
                 `<li>${qty.toFixed(0)}x ${item.name}</li>`;
@@ -157,6 +167,13 @@ function updateUI(state: typeof gameState) {
         statusDisplay.innerHTML +=
             `<p>Junk built:</p><ul>${listInnerHTML}</ul>`
     }
+}
+
+function updateUI(state: typeof gameState) {
+    updateGlobalWarmingIndexDisplay(state);
+    for (let item of availableItems) updateItemButton(state, item);
+    updateStatusDisplay(state);
+    appendInventoryListToStatusDisplay(state);
 }
 
 function animateForever(
