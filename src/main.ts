@@ -1,5 +1,7 @@
 import "./style.css";
 
+// Constants
+
 const GAME_TITLE = "Feed the Fire";
 const GAME_PREMISE = `
     You have discovered a new way to generate energy
@@ -18,19 +20,6 @@ const BASIC_ACTION_DESCRIPTION = "&#x1F525; Makes things hotter.";
 const ITEM_COST_GROWTH_BASE = 1.15;
 const DECIMAL_PRECISION = 1;
 
-function arrayToRecord<K extends string | symbol | number, V, T>(
-    ts: readonly T[], k: (t: T) => K, v: (t: T) => V
-) {
-    return Object.fromEntries(ts.map(t => [k(t), v(t)])) as Record<K, V>;
-}
-
-interface Item {
-    name: ItemName,
-    cost: number,
-    rate: number,
-    description: string
-}
-
 const availableItems = [
     {name: 'Cellphone', cost: 10, rate: 0.1, description: "&#x1F4F1; " +
         "Hello? Hello? Can you hear me?"},
@@ -44,11 +33,24 @@ const availableItems = [
         "Invented to... hm... No, wait, this hasn't been invented yet."}
 ] as const;
 
+// Interfaces and utility functions
+
+function arrayToRecord<K extends string | symbol | number, V, T>(
+    ts: readonly T[], k: (t: T) => K, v: (t: T) => V
+) {
+    return Object.fromEntries(ts.map(t => [k(t), v(t)])) as Record<K, V>;
+}
+
+interface Item {
+    name: ItemName,
+    cost: number,
+    rate: number,
+    description: string
+}
+
 type ItemName = typeof availableItems[number]['name'];
 
-function getItemRealCost(item: Item, alreadyHave: number): number {
-    return item.cost*(ITEM_COST_GROWTH_BASE**alreadyHave);
-}
+// Game logic
 
 let gameState = {
     globalWarmingIndex: 0,
@@ -58,6 +60,10 @@ let gameState = {
 
 function doBasicAction(state: typeof gameState) {
     state.globalWarmingIndex += 1;
+}
+
+function getItemRealCost(item: Item, alreadyHave: number): number {
+    return item.cost*(ITEM_COST_GROWTH_BASE**alreadyHave);
 }
 
 function canAffordItem(state: typeof gameState, item: Item): boolean {
@@ -78,6 +84,8 @@ function tryPurchaseItem(state: typeof gameState, item: Item): boolean {
 function tickGameState(state: typeof gameState, interval: number) {
     state.globalWarmingIndex += state.globalWarmingRate*interval/MSEC_PER_SEC;
 }
+
+// UI
 
 document.title = GAME_TITLE;
 const app: HTMLDivElement = document.querySelector('#app')!;
