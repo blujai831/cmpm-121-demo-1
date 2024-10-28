@@ -37,7 +37,7 @@ const availableItems = [
 
 function arrayToRecord<K extends string | symbol | number, V, T>(
     ts: readonly T[], k: (t: T) => K, v: (t: T) => V
-) {
+): Record<K, V> {
     return Object.fromEntries(ts.map(t => [k(t), v(t)])) as Record<K, V>;
 }
 
@@ -58,7 +58,7 @@ let gameState = {
     itemQuantities: arrayToRecord(availableItems, item => item.name, _ => 0)
 };
 
-function doBasicAction(state: typeof gameState) {
+function doBasicAction(state: typeof gameState): void {
     state.globalWarmingIndex += 1;
 }
 
@@ -81,7 +81,7 @@ function tryPurchaseItem(state: typeof gameState, item: Item): boolean {
     } else return false;
 }
 
-function tickGameState(state: typeof gameState, interval: number) {
+function tickGameState(state: typeof gameState, interval: number): void {
     state.globalWarmingIndex += state.globalWarmingRate*interval/MSEC_PER_SEC;
 }
 
@@ -118,7 +118,7 @@ const itemButtons = arrayToRecord(availableItems, item => item.name, item =>
 );
 const statusDisplay = makeElement('div');
 
-function updateGlobalWarmingIndexDisplay(state: typeof gameState) {
+function updateGlobalWarmingIndexDisplay(state: typeof gameState): void {
     if (state.globalWarmingIndex > 0) {
         globalWarmingIndexDisplay.innerHTML =
             `<p>${state.globalWarmingIndex.toFixed(DECIMAL_PRECISION)}
@@ -128,7 +128,7 @@ function updateGlobalWarmingIndexDisplay(state: typeof gameState) {
     }
 }
 
-function updateItemButton(state: typeof gameState, item: Item) {
+function updateItemButton(state: typeof gameState, item: Item): void {
     let qty = state.itemQuantities[item.name];
     let button = itemButtons[item.name];
     button.disabled = !canAffordItem(state, item);
@@ -143,7 +143,7 @@ function updateItemButton(state: typeof gameState, item: Item) {
     `;
 }
 
-function updateStatusDisplay(state: typeof gameState) {
+function updateStatusDisplay(state: typeof gameState): void {
     statusDisplay.innerHTML = "";
     if (state.globalWarmingRate > 0) {
         statusDisplay.innerHTML += `
@@ -154,7 +154,7 @@ function updateStatusDisplay(state: typeof gameState) {
     }
 }
 
-function appendInventoryListToStatusDisplay(state: typeof gameState) {
+function appendInventoryListToStatusDisplay(state: typeof gameState): void {
     let listInnerHTML = "";
     for (let item of availableItems) {
         let qty = state.itemQuantities[item.name];
@@ -169,7 +169,7 @@ function appendInventoryListToStatusDisplay(state: typeof gameState) {
     }
 }
 
-function updateUI(state: typeof gameState) {
+function updateUI(state: typeof gameState): void {
     updateGlobalWarmingIndexDisplay(state);
     for (let item of availableItems) updateItemButton(state, item);
     updateStatusDisplay(state);
@@ -180,7 +180,7 @@ function animateForever(
     what: (interval: number) => void,
     lastTimeStamp: DOMHighResTimeStamp = performance.now(),
     thisTimeStamp: DOMHighResTimeStamp = performance.now()
-) {
+): void {
     what(thisTimeStamp - lastTimeStamp);
     requestAnimationFrame(nextTimeStamp =>
         animateForever(what, thisTimeStamp, nextTimeStamp));
