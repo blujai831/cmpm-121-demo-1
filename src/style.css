@@ -80,6 +80,11 @@ li::before {
   content: "* ";
 }
 
+#global-warming-index {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
